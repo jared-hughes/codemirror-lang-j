@@ -4,8 +4,6 @@ This package implements [J language](https://jsoftware.com) support for the Code
 
 Remaining template steps:
 
- * Adjust the metadata in `src/index.ts` to work with your new grammar.
-
  * Adjust the grammar tests in `test/cases.txt`.
 
  * Build (`npm run prepare`) and test (`npm test`).

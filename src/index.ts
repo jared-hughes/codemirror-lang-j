@@ -1,27 +1,23 @@
 import {parser} from "./syntax.grammar"
-import {LRLanguage, LanguageSupport, indentNodeProp, foldNodeProp, foldInside, delimitedIndent} from "@codemirror/language"
+import {LRLanguage, LanguageSupport} from "@codemirror/language"
 import {styleTags, tags as t} from "@lezer/highlight"
 
 export const jLanguage = LRLanguage.define({
   parser: parser.configure({
     props: [
-      indentNodeProp.add({
-        Application: delimitedIndent({closing: ")", align: false})
-      }),
-      foldNodeProp.add({
-        Application: foldInside
-      }),
       styleTags({
-        Identifier: t.variableName,
-        Boolean: t.bool,
+        Name: t.variableName,
         String: t.string,
+        Number: t.number,
+        Graphic: t.operator,
         LineComment: t.lineComment,
-        "( )": t.paren
+        "( )": t.paren,
+        "{{ }}": t.brace
       })
     ]
   }),
   languageData: {
-    commentTokens: {line: ";"}
+    commentTokens: {line: "NB."}
   }
 })
 
