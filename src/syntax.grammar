@@ -1,26 +1,92 @@
-@top Program { expression* }
+/**
+ * All block comments are pasted directly from one of the following sources:
+ *  - https://code.jsoftware.com/wiki/Vocabulary/Words
+ */
+
+@top Program {
+  "" | sentence (newline sentence)* newline?
+}
 
 @skip { space | LineComment }
 
+sentence {
+  expression*
+}
+
 expression {
-  Identifier |
+  word |
+  ParenthesizedExpression { "(" expression ")" }
+  DirectDefinition { "{{" expression "}}" }
+}
+
+word {
   String |
-  Boolean |
-  Application { "(" expression* ")" }
+  Graphic |
+  Name |
+  /**
+   * There is one tremendously important, counter-intuitive, special case:
+   *  - A sequence of numbers separated by whitespace is treated as a single word
+   */
+  // Ignored this to avoid shift/reduce conflict. Still highlights the same
+  Number
 }
 
 @tokens {
-  Identifier { $[a-zA-Z_\-0-9]+ }
+  LineComment { "NB." ![\n]* }
+  @precedence { LineComment, Name }
 
-  String { '"' (!["\\] | "\\" _)* '"' }
+  /**
+   * An apostrophe (') starts a string which continues to the next apostrophe.
+   * After the first apostrophe (i.e. inside a string), two consecutive
+   * apostrophes stand for one apostrophe character
+   */
+  String { "'" (!['] | "''")* "'" }
 
-  Boolean { "#t" | "#f" }
+  /**
+   * Users may assign a name to an object which they create, according to these rules:
+   *  - It is a string of characters,
+   *  - Beginning with an upper or lower-case letter,
+   *  - Possibly followed by other letters and/or digits,
+   *  - And may include embedded single underscores (not consecutive and not trailing),
+   * An alphabetic starts a name, which contains all the ensuing consecutive
+   * alphabetics, numerics and underscores. It may be inflected, e.g. (a:).
+   * A name may not end in a single underscore unless it is a valid locative.
+   */
+  // I've ignored the underscore conditions
+  Name { $[a-zA-Z] $[a-zA-Z0-9_]* $[:.]* }
 
-  LineComment { ";" ![\n]* }
+  /**
+   * A graphic such as (+) is a word in itself. However it may be inflected, e.g. (+:)
+   * graphic:  !"#$%&*+,-./:;<=>?@[\]^_`{|}~
+   */
+  Graphic { $[!"#$%&*+,-./:;<=>?@[\\\]^_`{|}~] $[:.]* }
 
-  space { $[ \t\n\r]+ }
+  /**
+   * A numeric or underscore starts a number, which contains all the ensuing
+   * consecutive alphabetics, numerics, underscores and periods.
+   *
+   *  - J recognises these character-sequences as valid words:  
+   *      _: _. 0: 1: 2: 3: 4: 5: 6: 7: 8: 9: _0: _1: _2: _3: _4: _5: _6: _7: _8: _9:
+   *  - Apart from these exceptions, a number may not be inflected
+   */
+  // I've ignored the "may not be inflected" condition
+  Number { $[0-9] $[a-zA-Z0-9_.] ":"* }
+
+  /**
+   * A character outside the printable ASCII range (32 thru 127) is a single word.
+   */
+  // I've ignored unprintable ASCII
+
+  /**
+   * whitespace: includes sequences of space (ASCII 32) and/or TAB (ASCII 9),
+   * but excludes newline/linefeed/LF (ASCII 10)
+   */
+  space { $[ \t]+ }
+
+  newline { "\n" }
 
   "(" ")"
+  "{{" "}}"
 }
 
 @detectDelim
