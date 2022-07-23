@@ -1,41 +1,86 @@
-# Booleans
+# Number
 
-#t
-#f
-
-==>
-
-Program(Boolean, Boolean)
-
-# Identifiers
-
-one
-Two_Three
+123456
+123j456
+_
+_123
+_:
+_.
+0:
+_0:
 
 ==>
 
-Program(Identifier, Identifier)
+Program(Number, Number, Number, Number, Number, Number, Number, Number)
+
+# LineComment
+
+NB. abc
+12 NB.abc
+34
+
+==>
+
+Program(LineComment, Number, LineComment, Number)
 
 # Strings
 
-"hello"
-"one\"\\two"
+'hello'
+'it''s a quote'
 
 ==>
 
 Program(String, String)
 
-# Applications
+# Graphic
 
-(begin
-  (when #t
-    (print (concat "hello" " " "world")))
-  (print "DONE"))
++/\1 2 3
++:5
+..6
 
 ==>
 
-Program(Application(
-  Identifier,
-  Application(Identifier, Boolean, Application(
-    Identifier, Application(Identifier, String, String, String)))
-  Application(Identifier, String)))
+Program(
+  Graphic, Graphic, Graphic, Number, Number, Number,
+  Graphic, Number,
+  Graphic, Number
+)
+
+# Name
+
+abc
+i. 5
+u: 65
+abc_def
+
+==>
+
+Program(
+  Name,
+  Name, Number
+  Name, Number,
+  Name
+)
+
+# ParenthesizedExpression
+
+(a+b)*c
+
+==>
+
+Program(
+  ParenthesizedExpression(Name, Graphic, Name),
+  Graphic, Name
+)
+
+# DirectDefinition
+
+{{x+y}}
+{ { } }
+
+==>
+
+Program(
+  DirectDefinition(Name, Graphic, Name)
+  Graphic, Graphic, Graphic, Graphic
+)

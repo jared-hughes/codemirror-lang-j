@@ -15,8 +15,8 @@ sentence {
 
 expression {
   word |
-  ParenthesizedExpression { "(" expression ")" }
-  DirectDefinition { "{{" expression "}}" }
+  ParenthesizedExpression { "(" sentence ")" } |
+  DirectDefinition { "{{" sentence "}}" }
 }
 
 word {
@@ -59,7 +59,10 @@ word {
    * A graphic such as (+) is a word in itself. However it may be inflected, e.g. (+:)
    * graphic:  !"#$%&*+,-./:;<=>?@[\]^_`{|}~
    */
-  Graphic { $[!"#$%&*+,-./:;<=>?@[\\\]^_`{|}~] $[:.]* }
+  // Underscore ("_") removed due to overlap with Number
+  Graphic { $[!"#$%&*+,-./:;<=>?@[\\\]^`{|}~] $[:.]* }
+  @precedence { "{{", Graphic }
+  @precedence { "}}", Graphic }
 
   /**
    * A numeric or underscore starts a number, which contains all the ensuing
@@ -70,7 +73,7 @@ word {
    *  - Apart from these exceptions, a number may not be inflected
    */
   // I've ignored the "may not be inflected" condition
-  Number { $[0-9] $[a-zA-Z0-9_.] ":"* }
+  Number { $[0-9_] $[a-zA-Z0-9_.]* ":"* }
 
   /**
    * A character outside the printable ASCII range (32 thru 127) is a single word.
