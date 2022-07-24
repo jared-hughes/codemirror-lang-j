@@ -21,6 +21,6 @@ export const jLanguage = LRLanguage.define({
   }
 })
 
-export function jLang() {
+export function j() {
   return new LanguageSupport(jLanguage)
 }
