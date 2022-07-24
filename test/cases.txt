@@ -62,6 +62,18 @@ Program(
   Name
 )
 
+# ControlName
+
+if.x do. y end.
+for_el. lst do. el end.
+
+==>
+
+Program(
+  ControlName, Name, ControlName, Name, ControlName,
+  ControlName, Name, ControlName, Name, ControlName
+)
+
 # ParenthesizedExpression
 
 (a+b)*c

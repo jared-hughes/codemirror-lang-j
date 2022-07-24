@@ -1,6 +1,6 @@
 /**
- * All block comments are pasted directly from one of the following sources:
- *  - https://code.jsoftware.com/wiki/Vocabulary/Words
+ * All block comments are pasted directly from
+ * https://code.jsoftware.com/wiki/Vocabulary/Words
  */
 
 @top Program {
@@ -23,9 +23,9 @@ word {
   String |
   Graphic |
   Name |
+  ControlName |
   /**
-   * There is one tremendously important, counter-intuitive, special case:
-   *  - A sequence of numbers separated by whitespace is treated as a single word
+   * A sequence of numbers separated by whitespace is treated as a single word
    */
   // Ignored this to avoid shift/reduce conflict. Still highlights the same
   Number
@@ -54,6 +54,18 @@ word {
    */
   // I've ignored the underscore conditions
   Name { $[a-zA-Z] $[a-zA-Z0-9_]* $[:.]* }
+
+  // Just highlight the control features for now. No need for actual parsing
+  ControlName {
+    "do." | "end." |
+    "assert." | "break." | "continue." |
+    "else." | "elseif." | "for." |
+    ("for" | "goto" | "label") "_" $[a-zA-Z] $[a-zA-Z0-9_]* "." |
+    "if." | "return." | "select." | "case." | "fcase." |
+    "throw." | "try." | "catch." | "catchd." | "catcht." | "while." | "whilst."
+  }
+
+  @precedence { ControlName, Name }
 
   /**
    * A graphic such as (+) is a word in itself. However it may be inflected, e.g. (+:)

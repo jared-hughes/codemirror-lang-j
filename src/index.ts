@@ -7,6 +7,7 @@ export const jLanguage = LRLanguage.define({
     props: [
       styleTags({
         Name: t.variableName,
+        ControlName: t.controlKeyword,
         String: t.string,
         Number: t.number,
         Graphic: t.operator,
