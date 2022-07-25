@@ -1,5 +1,5 @@
 import {parser} from "./syntax.grammar"
-import {LRLanguage, LanguageSupport} from "@codemirror/language"
+import {LRLanguage, LanguageSupport, bracketMatching} from "@codemirror/language"
 import {styleTags, tags as t} from "@lezer/highlight"
 
 export const jLanguage = LRLanguage.define({
@@ -23,5 +23,9 @@ export const jLanguage = LRLanguage.define({
 })
 
 export function j() {
-  return new LanguageSupport(jLanguage)
+  return new LanguageSupport(
+    jLanguage,
+    // limit bracket matching to just the delimeters specified in syntax.grammar
+    bracketMatching({brackets: "()"})
+  )
 }
