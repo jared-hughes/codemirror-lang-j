@@ -4,10 +4,14 @@
  */
 
 @top Program {
-  "" | sentence (newline sentence)* newline?
+  sentences
 }
 
 @skip { space | LineComment }
+
+sentences {
+  (sentence newline)* sentence
+}
 
 sentence {
   expression*
@@ -16,7 +20,7 @@ sentence {
 expression {
   word |
   ParenthesizedExpression { "(" sentence ")" } |
-  DirectDefinition { "{{" sentence "}}" }
+  DirectDefinition { "{{" sentences "}}" }
 }
 
 word {

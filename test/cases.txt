@@ -89,10 +89,14 @@ Program(
 
 {{x+y}}
 { { } }
+{{
+  x+y
+}}
 
 ==>
 
 Program(
   DirectDefinition(Name, Graphic, Name)
-  Graphic, Graphic, Graphic, Graphic
+  Graphic, Graphic, Graphic, Graphic,
+  DirectDefinition(Name, Graphic, Name)
 )
