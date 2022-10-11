@@ -18,7 +18,9 @@ export const jLanguage = LRLanguage.define({
     ]
   }),
   languageData: {
-    commentTokens: {line: "NB."}
+    commentTokens: {line: "NB."},
+    // Prevent auto insertion of closing brackets for `[{"`.
+    closeBrackets: {brackets: ["(", "'"]}
   }
 })
 
